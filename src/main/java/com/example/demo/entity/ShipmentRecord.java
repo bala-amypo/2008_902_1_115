@@ -4,26 +4,19 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    name = "shipment_record",
-    uniqueConstraints = @UniqueConstraint(columnNames = "shipmentCode")
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "shipmentCode"))
 public class ShipmentRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String shipmentCode;
-
     private String origin;
     private String destination;
     private String productType;
-
     private LocalDateTime startDate;
     private LocalDateTime expectedDelivery;
-
     private String status;
     private LocalDateTime createdAt;
 
@@ -33,5 +26,15 @@ public class ShipmentRecord {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    public Long getId() { return id; }
+    public String getShipmentCode() { return shipmentCode; }
+    public void setShipmentCode(String shipmentCode) { this.shipmentCode = shipmentCode; }
+    public String getOrigin() { return origin; }
+    public void setOrigin(String origin) { this.origin = origin; }
+    public String getDestination() { return destination; }
+    public void setDestination(String destination) { this.destination = destination; }
+    public String getProductType() { return productType; }
+    public void setProductType(String productType) { this.productType = productType; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
