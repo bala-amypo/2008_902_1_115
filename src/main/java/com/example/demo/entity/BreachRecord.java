@@ -12,12 +12,10 @@ public class BreachRecord {
 
     private Long shipmentId;
     private Long logId;
-
     private String breachType;
     private Double breachValue;
     private String severity;
     private String details;
-
     private LocalDateTime detectedAt;
     private Boolean resolved;
 
@@ -27,5 +25,6 @@ public class BreachRecord {
         this.resolved = false;
     }
 
-    // Getters and Setters
+    public Long getId() { return id; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }

@@ -12,10 +12,8 @@ public class AlertRecord {
 
     private Long shipmentId;
     private Long breachId;
-
     private String alertType;
     private String message;
-
     private LocalDateTime sentAt;
     private Boolean acknowledged;
 
@@ -25,5 +23,8 @@ public class AlertRecord {
         this.acknowledged = false;
     }
 
-    // Getters and Setters
+    public Long getId() { return id; }
+    public void setAcknowledged(Boolean acknowledged) {
+        this.acknowledged = acknowledged;
+    }
 }
