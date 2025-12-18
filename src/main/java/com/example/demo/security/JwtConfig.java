@@ -1,0 +1,13 @@
+package com.example.demo.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class JwtConfig {
+
+    @Bean
+    public JwtUtil jwtUtil() {
+        return new JwtUtil("secret-key", 3600000);
+    }
+}
