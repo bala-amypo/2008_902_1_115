@@ -12,11 +12,8 @@ public class TemperatureSensorLog {
 
     private Long shipmentId;
     private String sensorId;
-
     private LocalDateTime recordedAt;
     private Double temperatureValue;
-
-    @Column(nullable = true)
     private String location;
 
     @PrePersist
@@ -24,5 +21,7 @@ public class TemperatureSensorLog {
         this.recordedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    public Long getId() { return id; }
+    public Long getShipmentId() { return shipmentId; }
+    public void setShipmentId(Long shipmentId) { this.shipmentId = shipmentId; }
 }

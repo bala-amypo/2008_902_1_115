@@ -11,18 +11,14 @@ public class TemperatureRule {
     private Long id;
 
     private String productType;
-
     private Double minTemp;
     private Double maxTemp;
-
     private Boolean active;
-
     private LocalDate effectiveFrom;
     private LocalDate effectiveTo;
 
-    // NOTE:
-    // minTemp < maxTemp must be validated in Service layer
-    // Only one active rule per product/date range must be enforced in Service layer
-
-    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Double getMinTemp() { return minTemp; }
+    public Double getMaxTemp() { return maxTemp; }
 }
