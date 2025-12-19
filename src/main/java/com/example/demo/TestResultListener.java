@@ -7,16 +7,16 @@ public class TestResultListener implements ITestListener {
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println(result.getMethod().getMethodName() + " - PASS");
+        System.out.println(result.getName() + " - PASS");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println(result.getMethod().getMethodName() + " - FAIL");
+        System.out.println(result.getName() + " - FAIL");
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        System.out.println(result.getMethod().getMethodName() + " - SKIP");
+        System.out.println(result.getName() + " - SKIP");
     }
 }
