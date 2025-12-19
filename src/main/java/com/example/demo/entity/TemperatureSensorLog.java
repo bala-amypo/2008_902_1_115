@@ -22,6 +22,20 @@ public class TemperatureSensorLog {
     }
 
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
     public Long getShipmentId() { return shipmentId; }
     public void setShipmentId(Long shipmentId) { this.shipmentId = shipmentId; }
+
+    public String getSensorId() { return sensorId; }
+    public void setSensorId(String sensorId) { this.sensorId = sensorId; }
+
+    public LocalDateTime getRecordedAt() { return recordedAt; }
+    public void setRecordedAt(LocalDateTime recordedAt) { this.recordedAt = recordedAt; }
+
+    public Double getTemperatureValue() { return temperatureValue; }
+    public void setTemperatureValue(Double temperatureValue) { this.temperatureValue = temperatureValue; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 }
