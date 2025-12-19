@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.ShipmentRecord;
@@ -20,8 +19,8 @@ public class ShipmentRecordController {
         this.service = service;
     }
 
-    @PostMapping("/")
-    public ShipmentRecord createShipment(@RequestBody ShipmentRecord shipment) {
+    @PostMapping
+    public ShipmentRecord create(@RequestBody ShipmentRecord shipment) {
         return service.createShipment(shipment);
     }
 
@@ -42,7 +41,7 @@ public class ShipmentRecordController {
         return service.getShipmentById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<ShipmentRecord> getAll() {
         return service.getAllShipments();
     }

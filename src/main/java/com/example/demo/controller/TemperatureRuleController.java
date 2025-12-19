@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.TemperatureRule;
@@ -21,33 +20,35 @@ public class TemperatureRuleController {
         this.service = service;
     }
 
-    @PostMapping("/")
-    public TemperatureRule createRule(@RequestBody TemperatureRule rule) {
+    @PostMapping
+    public TemperatureRule create(@RequestBody TemperatureRule rule) {
         return service.createRule(rule);
     }
 
     @PutMapping("/{id}")
-    public TemperatureRule updateRule(
+    public TemperatureRule update(
             @PathVariable Long id,
             @RequestBody TemperatureRule rule) {
         return service.updateRule(id, rule);
     }
 
     @GetMapping("/active")
-    public List<TemperatureRule> getActiveRules() {
+    public List<TemperatureRule> getActive() {
         return service.getActiveRules();
     }
 
     @GetMapping("/product/{productType}")
-    public TemperatureRule getRuleForProduct(
+    public TemperatureRule getForProduct(
             @PathVariable String productType,
             @RequestParam(required = false) LocalDate date) {
 
-        LocalDate queryDate = (date != null) ? date : LocalDate.now();
-        return service.getRuleForProduct(productType, queryDate);
+        return service.getRuleForProduct(
+                productType,
+                date != null ? date : LocalDate.now()
+        );
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<TemperatureRule> getAll() {
         return service.getAllRules();
     }

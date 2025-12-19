@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.TemperatureSensorLog;
@@ -20,13 +19,13 @@ public class TemperatureLogController {
         this.service = service;
     }
 
-    @PostMapping("/")
-    public TemperatureSensorLog recordLog(@RequestBody TemperatureSensorLog log) {
+    @PostMapping
+    public TemperatureSensorLog record(@RequestBody TemperatureSensorLog log) {
         return service.recordLog(log);
     }
 
     @GetMapping("/shipment/{shipmentId}")
-    public List<TemperatureSensorLog> getLogsByShipment(@PathVariable Long shipmentId) {
+    public List<TemperatureSensorLog> getByShipment(@PathVariable Long shipmentId) {
         return service.getLogsByShipment(shipmentId);
     }
 
@@ -35,7 +34,7 @@ public class TemperatureLogController {
         return service.getLogById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<TemperatureSensorLog> getAll() {
         return service.getAllLogs();
     }

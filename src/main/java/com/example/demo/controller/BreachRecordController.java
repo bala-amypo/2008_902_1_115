@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.BreachRecord;
@@ -20,13 +19,13 @@ public class BreachRecordController {
         this.service = service;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public BreachRecord logBreach(@RequestBody BreachRecord breach) {
         return service.logBreach(breach);
     }
 
     @PutMapping("/{id}/resolve")
-    public BreachRecord resolveBreach(@PathVariable Long id) {
+    public BreachRecord resolve(@PathVariable Long id) {
         return service.resolveBreach(id);
     }
 
@@ -40,7 +39,7 @@ public class BreachRecordController {
         return service.getBreachById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<BreachRecord> getAll() {
         return service.getAllBreaches();
     }

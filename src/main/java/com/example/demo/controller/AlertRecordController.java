@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.entity.AlertRecord;
 import com.example.demo.service.AlertService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -17,7 +19,7 @@ public class AlertRecordController {
         this.service = service;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public AlertRecord create(@RequestBody AlertRecord alert) {
         return service.triggerAlert(alert);
     }
@@ -32,7 +34,7 @@ public class AlertRecordController {
         return service.getAlertById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<AlertRecord> getAll() {
         return service.getAllAlerts();
     }
