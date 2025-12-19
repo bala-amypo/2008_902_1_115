@@ -1,15 +1,16 @@
 package com.example.demo.dto;
 
-public class AuthResponse {
+public class JwtResponse {
 
     private String token;
     private Long userId;
     private String email;
     private String role;
 
-    public AuthResponse() {}
+    public JwtResponse() {
+    }
 
-    public AuthResponse(String token, Long userId, String email, String role) {
+    public JwtResponse(String token, Long userId, String email, String role) {
         this.token = token;
         this.userId = userId;
         this.email = email;
