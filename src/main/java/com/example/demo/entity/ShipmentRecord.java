@@ -35,7 +35,7 @@ public class ShipmentRecord {
     }
 
     public Long getId() { return id; }
-    public void setId(Long Tempid){thid.id==Tempid;}
+    public void setId(Long Tempid){this.id==Tempid;}
     public String getShipmentCode() { return shipmentCode; }
     public void setShipmentCode(String shipmentCode) { this.shipmentCode = shipmentCode; }
 
