@@ -5,8 +5,10 @@ import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
 import java.util.Date;
+import org.springframework.stereotype.Component;
+import java.lang.*;
 
-@component
+@Component
 public class JwtUtil {
 
     private final Key key;
