@@ -3,7 +3,7 @@ package com.example.demo.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 import org.springframework.stereotype.Component;
 import java.lang.String;
@@ -11,7 +11,7 @@ import java.lang.String;
 @Component
 public class JwtUtil {
 
-    private final Key key;
+    private final SecretKey key;
     private final long expirationMs;
 
     public JwtUtil(String secret, long expirationMs) {
