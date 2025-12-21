@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 
+@component
 public class JwtUtil {
 
     private final Key key;
