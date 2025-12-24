@@ -1,142 +1,76 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import org.springframework.web.bind.annotation.*;
+import com.example.demo.dto.JwtResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.entity.User;
+import com.example.demo.security.JwtUtil;
+import com.example.demo.service.UserService;
 
-// import com.example.demo.dto.LoginRequest;
-// import com.example.demo.dto.RegisterRequest;
-// import com.example.demo.entity.User;
-// import com.example.demo.security.JwtUtil;
-// import com.example.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
 
-// import io.swagger.v3.oas.annotations.tags.Tag;
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
 
-// @RestController
-// @RequestMapping("/auth")
-// @Tag(name = "Authentication")
-// public class AuthController {
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-//     private final UserService userService;
-//     private final JwtUtil jwtUtil;
+    public AuthController(
+            UserService userService,
+            AuthenticationManager authenticationManager,
+            JwtUtil jwtUtil) {
 
-//     public AuthController(UserService userService, JwtUtil jwtUtil) {
-//         this.userService = userService;
-//         this.jwtUtil = jwtUtil;
-//     }
-
-//     @PostMapping("/register")
-//     public String register(@RequestBody RegisterRequest request) {
-//         User user = new User();
-//         user.setFullName(request.getFullName());
-//         user.setEmail(request.getEmail());
-//         user.setPassword(request.getPassword());
-
-//         User savedUser = userService.registerUser(user);
-
-//         return jwtUtil.generateToken(
-//                 savedUser.getId(),
-//                 savedUser.getEmail(),
-//                 savedUser.getRole()
-//         );
-//     }
-
-//     @PostMapping("/login")
-//     public String login(@RequestBody LoginRequest request) {
-
-//         User user = userService.findByEmail(request.getEmail());
-
-//         if (user == null) {
-//             throw new RuntimeException("Invalid credentials");
-//         }
-
-//         return jwtUtil.generateToken(
-//                 user.getId(),
-//                 user.getEmail(),
-//                 user.getRole()
-//         );
-//     }
-// }
-
-
-
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "alert_records")
-public class AlertRecord {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long shipmentId;
-    private Long breachId;
-    private boolean acknowledged;
-    private LocalDateTime sentAt;
-
-    public AlertRecord() {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
-    public AlertRecord(Long shipmentId, Long breachId,
-                       boolean acknowledged, LocalDateTime sentAt) {
-        this.shipmentId = shipmentId;
-        this.breachId = breachId;
-        this.acknowledged = acknowledged;
-        this.sentAt = sentAt;
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        User user = userService.findByEmail(request.getEmail());
+
+        String token = jwtUtil.generateToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
+
+        return ResponseEntity.ok(
+                new JwtResponse(token, user.getId(), user.getEmail(), user.getRole())
+        );
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.acknowledged = false;
-        this.sentAt = LocalDateTime.now();
-    }
+    @PostMapping("/register")
+    public ResponseEntity<JwtResponse> register(@RequestBody RegisterRequest request) {
 
-    // GETTERS
-    public Long getId() {
-        return id;
-    }
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
 
-    public Long getShipmentId() {
-        return shipmentId;
-    }
+        User saved = userService.registerUser(user);
 
-    public Long getBreachId() {
-        return breachId;
-    }
+        String token = jwtUtil.generateToken(
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRole()
+        );
 
-    public boolean isAcknowledged() {
-        return acknowledged;
-    }
-
-    // REQUIRED BY TESTS
-    public boolean getAcknowledged() {
-        return acknowledged;
-    }
-
-    public LocalDateTime getSentAt() {
-        return sentAt;
-    }
-
-    // SETTERS
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setShipmentId(Long shipmentId) {
-        this.shipmentId = shipmentId;
-    }
-
-    public void setBreachId(Long breachId) {
-        this.breachId = breachId;
-    }
-
-    public void setAcknowledged(boolean acknowledged) {
-        this.acknowledged = acknowledged;
-    }
-
-    public void setSentAt(LocalDateTime sentAt) {
-        this.sentAt = sentAt;
+        return ResponseEntity.ok(
+                new JwtResponse(token, saved.getId(), saved.getEmail(), saved.getRole())
+        );
     }
 }

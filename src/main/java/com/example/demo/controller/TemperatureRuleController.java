@@ -2,16 +2,14 @@ package com.example.demo.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.TemperatureRule;
 import com.example.demo.service.TemperatureRuleService;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 @RestController
 @RequestMapping("/api/rules")
-@Tag(name = "Temperature Rules")
 public class TemperatureRuleController {
 
     private final TemperatureRuleService service;
@@ -42,10 +40,12 @@ public class TemperatureRuleController {
             @PathVariable String productType,
             @RequestParam(required = false) LocalDate date) {
 
-        return service.getRuleForProduct(
-                productType,
-                date != null ? date : LocalDate.now()
-        );
+        return service
+                .getRuleForProduct(
+                        productType,
+                        date != null ? date : LocalDate.now()
+                )
+                .orElse(null);
     }
 
     @GetMapping

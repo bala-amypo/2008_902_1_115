@@ -1,16 +1,14 @@
 package com.example.demo.controller;
 
 import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.ShipmentRecord;
 import com.example.demo.service.ShipmentRecordService;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 @RestController
 @RequestMapping("/api/shipments")
-@Tag(name = "Shipments")
 public class ShipmentRecordController {
 
     private final ShipmentRecordService service;
@@ -33,7 +31,7 @@ public class ShipmentRecordController {
 
     @GetMapping("/code/{shipmentCode}")
     public ShipmentRecord getByCode(@PathVariable String shipmentCode) {
-        return service.getShipmentByCode(shipmentCode);
+        return service.getShipmentByCode(shipmentCode).orElse(null);
     }
 
     @GetMapping("/{id}")
