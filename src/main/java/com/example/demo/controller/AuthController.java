@@ -58,79 +58,85 @@
 
 
 
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import com.example.demo.dto.JwtResponse;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.User;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+@Entity
+@Table(name = "alert_records")
+public class AlertRecord {
 
-@RestController
-@RequestMapping("/auth")
-public class AuthController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private Long shipmentId;
+    private Long breachId;
+    private boolean acknowledged;
+    private LocalDateTime sentAt;
 
-    public AuthController(
-            UserService userService,
-            AuthenticationManager authenticationManager,
-            JwtUtil jwtUtil) {
-
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+    public AlertRecord() {
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
-
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-
-        User user = userService.findByEmail(request.getEmail());
-
-        String token = jwtUtil.generateToken(
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
-
-        return ResponseEntity.ok(
-                new JwtResponse(token, user.getId(), user.getEmail(), user.getRole())
-        );
+    public AlertRecord(Long shipmentId, Long breachId,
+                       boolean acknowledged, LocalDateTime sentAt) {
+        this.shipmentId = shipmentId;
+        this.breachId = breachId;
+        this.acknowledged = acknowledged;
+        this.sentAt = sentAt;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<JwtResponse> register(@RequestBody RegisterRequest request) {
+    @PrePersist
+    public void prePersist() {
+        this.acknowledged = false;
+        this.sentAt = LocalDateTime.now();
+    }
 
-        User user = new User();
-        user.setFullName(request.getFullName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+    // GETTERS
+    public Long getId() {
+        return id;
+    }
 
-        User saved = userService.registerUser(user);
+    public Long getShipmentId() {
+        return shipmentId;
+    }
 
-        String token = jwtUtil.generateToken(
-                saved.getId(),
-                saved.getEmail(),
-                saved.getRole()
-        );
+    public Long getBreachId() {
+        return breachId;
+    }
 
-        return ResponseEntity.ok(
-                new JwtResponse(token, saved.getId(), saved.getEmail(), saved.getRole())
-        );
+    public boolean isAcknowledged() {
+        return acknowledged;
+    }
+
+    // REQUIRED BY TESTS
+    public boolean getAcknowledged() {
+        return acknowledged;
+    }
+
+    public LocalDateTime getSentAt() {
+        return sentAt;
+    }
+
+    // SETTERS
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setShipmentId(Long shipmentId) {
+        this.shipmentId = shipmentId;
+    }
+
+    public void setBreachId(Long breachId) {
+        this.breachId = breachId;
+    }
+
+    public void setAcknowledged(boolean acknowledged) {
+        this.acknowledged = acknowledged;
+    }
+
+    public void setSentAt(LocalDateTime sentAt) {
+        this.sentAt = sentAt;
     }
 }
